@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An important question...</title>
+    <title>An important question... 🐼🐻</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,14 +13,15 @@
         }
         body {
             background: linear-gradient(135deg, #ffe6e6 0%, #ffb3c6 100%);
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             text-align: center;
             position: relative;
+            padding: 20px 0;
         }
         .card {
             background: rgba(255, 255, 255, 0.95);
@@ -28,29 +29,32 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             backdrop-filter: blur(5px);
-            max-width: 420px;
+            max-width: 450px;
             width: 90%;
             z-index: 2;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .gif {
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
             border-radius: 15px;
             margin-bottom: 20px;
+            flex-shrink: 0;
         }
         h1 {
             color: #ff4d6d;
             font-size: 24px;
             margin-bottom: 15px;
-            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .please-quote {
-            color: #d62828;
+            color: #ff4d6d;
             font-size: 16px;
             font-weight: bold;
             font-style: italic;
@@ -62,15 +66,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            min-height: 60px;
+            width: 100%;
+            padding: 20px 0;
+            overflow: visible;
         }
         button {
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
         }
         #yesBtn {
             background-color: #ff4d6d;
@@ -78,7 +82,8 @@
             padding: 14px 32px;
             font-size: 18px;
             box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-            z-index: 10;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
+            transform-origin: center center;
         }
         #yesBtn:hover {
             background-color: #ff2a55;
@@ -90,8 +95,14 @@
             font-size: 16px;
             position: fixed;
             z-index: 999;
-            transition: left 0.15s ease, top 0.15s ease, transform 0.15s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: left 0.15s ease, top 0.15s ease;
+            /* Fixed dimensions so shape/size never alters */
+            width: 80px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .success-message {
             display: none;
@@ -115,10 +126,10 @@
 <body>
 
     <div class="card" id="mainCard">
-        <img id="mainGif" class="gif" src="https://media.giphy.com/media/cLS1AC1E8hvDH755dq/giphy.gif" alt="Cute begging cat">
+        <img id="mainGif" class="gif" src="https://media.tenor.com/f11j0Rj5x80AAAAC/bubu-dudu-bubu.gif" alt="Bubu Dudu Cute Love">
         
         <div id="questionContent">
-            <h1>Would you go on a date with me? 🥺</h1>
+            <h1>Would you go on a date with me? 🥺❤️</h1>
             <div id="quoteBox" class="please-quote"></div>
             <div class="btn-container">
                 <button id="yesBtn">Yes!</button>
@@ -126,12 +137,11 @@
         </div>
 
         <div id="successContent" class="success-message">
-            <h2>I knew you'd say YES! 🎉 ❤️</h2>
-            <p>Best decision ever. Let me know when you're free!</p>
+            <h2>YAY! Best decision ever! 🐼🐻💋</h2>
+            <p>I can't wait! Let me know when you're free! 🥰</p>
         </div>
     </div>
 
-    <!-- No button is fixed to body so it can hop ANYWHERE on the full viewport -->
     <button id="noBtn">No</button>
 
     <script>
@@ -142,41 +152,43 @@
         const mainGif = document.getElementById('mainGif');
         const quoteBox = document.getElementById('quoteBox');
 
+        const cuteBubuGifs = [
+            "https://media.tenor.com/gU86W-qiiSgAAAAC/bubu-dudu-sseeyall.gif",
+            "https://media.tenor.com/J7t6j5bYd1gAAAAC/bubu-dudu-kiss.gif",
+            "https://media.tenor.com/1-P2i6x2T6wAAAAC/bubu-dudu-cuddle.gif",
+            "https://media.tenor.com/00l4iZ5-s0MAAAAC/bubu-dudu-hearts.gif",
+            "https://media.tenor.com/vH5tP2v6Q1IAAAAC/bubu-dudu-hug.gif"
+        ];
+
         const quotes = [
-            "Are you sure? 💔",
-            "Please reconsider! 🥺",
-            "Think about how fun it will be!",
-            "Don't do this to me... 😭",
-            "I'll buy you food! 🍕",
-            "Just give it one chance! ✨",
-            "Look at the Yes button, it's glowing!",
-            "You're misclicking, right?",
-            "My heart can't take this 💔",
-            "Okay now you're just playing with me 😂",
-            "Resistance is futile!",
-            "Press YES already! ❤️"
+            "You know you want to say Yes! 😘",
+            "Sending extra Bubu kisses! 💋",
+            "Think about all the fun & hugs! 🤗",
+            "I'll buy you all your favorite food! 🍕🧋",
+            "Just look how cute we'd be! ✨",
+            "The Yes button is getting bigger for a reason! ❤️",
+            "You can't resist this much cuteness! 🥰",
+            "Press Yes and send me a kiss! 💋",
+            "Resistance is futile! 😘",
+            "Just hit YES already! ❤️✨"
         ];
 
         let clickCount = 0;
         let yesScale = 1;
-        let noScale = 1;
 
-        // Position initial No button next to Yes button
         function setInitialNoPosition() {
             const yesRect = yesBtn.getBoundingClientRect();
-            noBtn.style.left = (yesRect.right + 20) + 'px';
+            noBtn.style.left = (yesRect.right + 25) + 'px';
             noBtn.style.top = yesRect.top + 'px';
         }
 
         window.addEventListener('load', setInitialNoPosition);
         window.addEventListener('resize', setInitialNoPosition);
 
-        // Hop across the entire screen
         function dodgeNo() {
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
 
-            // Random coordinates within full viewport padding
             const padding = 20;
             const maxX = window.innerWidth - btnWidth - padding;
             const maxY = window.innerHeight - btnHeight - padding;
@@ -187,28 +199,22 @@
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
 
-            // Display dramatic quote
             quoteBox.innerText = quotes[clickCount % quotes.length];
             quoteBox.style.animation = 'none';
-            quoteBox.offsetHeight; // trigger reflow
+            quoteBox.offsetHeight;
             quoteBox.style.animation = 'fadeIn 0.3s ease';
 
-            // Increase Yes size, decrease No size
+            mainGif.src = cuteBubuGifs[clickCount % cuteBubuGifs.length];
+
             clickCount++;
-            yesScale += 0.25;
-            noScale = Math.max(0.4, noScale - 0.05);
+            yesScale += 0.2;
 
+            // Grow Yes button size cleanly without altering No button
             yesBtn.style.transform = `scale(${yesScale})`;
-            noBtn.style.transform = `scale(${noScale})`;
-
-            // Change GIF to progressively sadder/dramatic gifs
-            if (clickCount === 3) {
-                mainGif.src = "https://media.giphy.com/media/d22NqpjOcXZ8Q/giphy.gif"; // Sad puppy
-            } else if (clickCount === 6) {
-                mainGif.src = "https://media.giphy.com/media/7SF1r80mYv1m/giphy.gif"; // Crying cat
-            } else if (clickCount === 9) {
-                mainGif.src = "https://media.giphy.com/media/L9543Y8B54d3C/giphy.gif"; // Sobbing
-            }
+            
+            // Add padding to container dynamically so large Yes button doesn't overlap text/GIF
+            const containerPadding = Math.max(20, 20 * yesScale);
+            document.querySelector('.btn-container').style.padding = `${containerPadding}px 0`;
         }
 
         noBtn.addEventListener('mouseover', dodgeNo);
@@ -218,12 +224,11 @@
             dodgeNo();
         });
 
-        // Handle "Yes" click
         yesBtn.addEventListener('click', () => {
             questionContent.style.display = 'none';
             noBtn.style.display = 'none';
             successContent.style.display = 'block';
-            mainGif.src = 'https://media.giphy.com/media/26hpW3b1B0B26gYnS/giphy.gif'; // Happy celebration
+            mainGif.src = 'https://media.tenor.com/gU86W-qiiSgAAAAC/bubu-dudu-sseeyall.gif'; 
         });
     </script>
 </body>
