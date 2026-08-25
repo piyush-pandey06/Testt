@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quick question...</title>
+    <title>An important question...</title>
     <style>
         * {
             box-sizing: border-box;
@@ -14,21 +14,24 @@
         body {
             background: linear-gradient(135deg, #ffe6e6 0%, #ffb3c6 100%);
             height: 100vh;
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             text-align: center;
+            position: relative;
         }
         .card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             backdrop-filter: blur(5px);
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
-            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
         }
         .gif {
             width: 180px;
@@ -39,39 +42,56 @@
         }
         h1 {
             color: #ff4d6d;
-            font-size: 26px;
-            margin-bottom: 25px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .btn-group {
+        .please-quote {
+            color: #d62828;
+            font-size: 16px;
+            font-weight: bold;
+            font-style: italic;
+            min-height: 24px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .btn-container {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
-            position: relative;
-            min-height: 50px;
+            min-height: 60px;
         }
         button {
-            padding: 12px 28px;
-            font-size: 18px;
             font-weight: bold;
             border: none;
-            border-radius: 25px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
         }
         #yesBtn {
             background-color: #ff4d6d;
             color: white;
+            padding: 14px 32px;
+            font-size: 18px;
             box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            z-index: 10;
         }
         #yesBtn:hover {
             background-color: #ff2a55;
-            transform: scale(1.08);
         }
         #noBtn {
-            background-color: #f0f0f0;
-            color: #555;
-            position: absolute;
-            right: 40px;
+            background-color: #4a4a4a;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            position: fixed;
+            z-index: 999;
+            transition: left 0.15s ease, top 0.15s ease, transform 0.15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .success-message {
             display: none;
@@ -85,26 +105,34 @@
             color: #444;
             font-size: 18px;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
     <div class="card" id="mainCard">
-        <img id="mainGif" class="gif" src="https://media.giphy.com/media/cLS1AC1E8hvDH755dq/giphy.gif" alt="Asking gif">
+        <img id="mainGif" class="gif" src="https://media.giphy.com/media/cLS1AC1E8hvDH755dq/giphy.gif" alt="Cute begging cat">
         
         <div id="questionContent">
-            <h1>Would you like to go on a date with me? ✨</h1>
-            <div class="btn-group">
+            <h1>Would you go on a date with me? 🥺</h1>
+            <div id="quoteBox" class="please-quote"></div>
+            <div class="btn-container">
                 <button id="yesBtn">Yes!</button>
-                <button id="noBtn">No</button>
             </div>
         </div>
 
         <div id="successContent" class="success-message">
-            <h2>Yay! See you soon! 🎉 ❤️</h2>
-            <p>I'll pick a great spot. Let me know when you're free!</p>
+            <h2>I knew you'd say YES! 🎉 ❤️</h2>
+            <p>Best decision ever. Let me know when you're free!</p>
         </div>
     </div>
+
+    <!-- No button is fixed to body so it can hop ANYWHERE on the full viewport -->
+    <button id="noBtn">No</button>
 
     <script>
         const yesBtn = document.getElementById('yesBtn');
@@ -112,36 +140,90 @@
         const questionContent = document.getElementById('questionContent');
         const successContent = document.getElementById('successContent');
         const mainGif = document.getElementById('mainGif');
+        const quoteBox = document.getElementById('quoteBox');
 
+        const quotes = [
+            "Are you sure? 💔",
+            "Please reconsider! 🥺",
+            "Think about how fun it will be!",
+            "Don't do this to me... 😭",
+            "I'll buy you food! 🍕",
+            "Just give it one chance! ✨",
+            "Look at the Yes button, it's glowing!",
+            "You're misclicking, right?",
+            "My heart can't take this 💔",
+            "Okay now you're just playing with me 😂",
+            "Resistance is futile!",
+            "Press YES already! ❤️"
+        ];
+
+        let clickCount = 0;
         let yesScale = 1;
+        let noScale = 1;
 
-        // Move the "No" button randomly on hover or tap
-        function moveNoBtn() {
-            const card = document.getElementById('mainCard');
-            const cardRect = card.getBoundingClientRect();
-            const btnRect = noBtn.getBoundingClientRect();
-
-            const maxX = cardRect.width - btnRect.width - 20;
-            const maxY = cardRect.height - btnRect.height - 20;
-
-            const randomX = Math.floor(Math.random() * maxX) - (cardRect.width / 2 - btnRect.width);
-            const randomY = Math.floor(Math.random() * maxY) - (cardRect.height / 2 - btnRect.height);
-
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            
-            // Make Yes button bigger each time they try to hit No
-            yesScale += 0.15;
-            yesBtn.style.transform = `scale(${yesScale})`;
+        // Position initial No button next to Yes button
+        function setInitialNoPosition() {
+            const yesRect = yesBtn.getBoundingClientRect();
+            noBtn.style.left = (yesRect.right + 20) + 'px';
+            noBtn.style.top = yesRect.top + 'px';
         }
 
-        noBtn.addEventListener('mouseover', moveNoBtn);
-        noBtn.addEventListener('touchstart', moveNoBtn);
+        window.addEventListener('load', setInitialNoPosition);
+        window.addEventListener('resize', setInitialNoPosition);
+
+        // Hop across the entire screen
+        function dodgeNo() {
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // Random coordinates within full viewport padding
+            const padding = 20;
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+
+            // Display dramatic quote
+            quoteBox.innerText = quotes[clickCount % quotes.length];
+            quoteBox.style.animation = 'none';
+            quoteBox.offsetHeight; // trigger reflow
+            quoteBox.style.animation = 'fadeIn 0.3s ease';
+
+            // Increase Yes size, decrease No size
+            clickCount++;
+            yesScale += 0.25;
+            noScale = Math.max(0.4, noScale - 0.05);
+
+            yesBtn.style.transform = `scale(${yesScale})`;
+            noBtn.style.transform = `scale(${noScale})`;
+
+            // Change GIF to progressively sadder/dramatic gifs
+            if (clickCount === 3) {
+                mainGif.src = "https://media.giphy.com/media/d22NqpjOcXZ8Q/giphy.gif"; // Sad puppy
+            } else if (clickCount === 6) {
+                mainGif.src = "https://media.giphy.com/media/7SF1r80mYv1m/giphy.gif"; // Crying cat
+            } else if (clickCount === 9) {
+                mainGif.src = "https://media.giphy.com/media/L9543Y8B54d3C/giphy.gif"; // Sobbing
+            }
+        }
+
+        noBtn.addEventListener('mouseover', dodgeNo);
+        noBtn.addEventListener('click', dodgeNo);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            dodgeNo();
+        });
 
         // Handle "Yes" click
         yesBtn.addEventListener('click', () => {
             questionContent.style.display = 'none';
+            noBtn.style.display = 'none';
             successContent.style.display = 'block';
-            mainGif.src = 'https://media.giphy.com/media/26hpW3b1B0B26gYnS/giphy.gif'; // Celebration gif
+            mainGif.src = 'https://media.giphy.com/media/26hpW3b1B0B26gYnS/giphy.gif'; // Happy celebration
         });
     </script>
 </body>
