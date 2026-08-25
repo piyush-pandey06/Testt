@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick question...</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffb3c6 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+        .gif {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #ff4d6d;
+            font-size: 26px;
+            margin-bottom: 25px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            min-height: 50px;
+        }
+        button {
+            padding: 12px 28px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+        #yesBtn:hover {
+            background-color: #ff2a55;
+            transform: scale(1.08);
+        }
+        #noBtn {
+            background-color: #f0f0f0;
+            color: #555;
+            position: absolute;
+            right: 40px;
+        }
+        .success-message {
+            display: none;
+        }
+        .success-message h2 {
+            color: #ff4d6d;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .success-message p {
+            color: #444;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <img id="mainGif" class="gif" src="https://media.giphy.com/media/cLS1AC1E8hvDH755dq/giphy.gif" alt="Asking gif">
+        
+        <div id="questionContent">
+            <h1>Would you like to go on a date with me? ✨</h1>
+            <div class="btn-group">
+                <button id="yesBtn">Yes!</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="successContent" class="success-message">
+            <h2>Yay! See you soon! 🎉 ❤️</h2>
+            <p>I'll pick a great spot. Let me know when you're free!</p>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionContent = document.getElementById('questionContent');
+        const successContent = document.getElementById('successContent');
+        const mainGif = document.getElementById('mainGif');
+
+        let yesScale = 1;
+
+        // Move the "No" button randomly on hover or tap
+        function moveNoBtn() {
+            const card = document.getElementById('mainCard');
+            const cardRect = card.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+
+            const maxX = cardRect.width - btnRect.width - 20;
+            const maxY = cardRect.height - btnRect.height - 20;
+
+            const randomX = Math.floor(Math.random() * maxX) - (cardRect.width / 2 - btnRect.width);
+            const randomY = Math.floor(Math.random() * maxY) - (cardRect.height / 2 - btnRect.height);
+
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            // Make Yes button bigger each time they try to hit No
+            yesScale += 0.15;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        }
+
+        noBtn.addEventListener('mouseover', moveNoBtn);
+        noBtn.addEventListener('touchstart', moveNoBtn);
+
+        // Handle "Yes" click
+        yesBtn.addEventListener('click', () => {
+            questionContent.style.display = 'none';
+            successContent.style.display = 'block';
+            mainGif.src = 'https://media.giphy.com/media/26hpW3b1B0B26gYnS/giphy.gif'; // Celebration gif
+        });
+    </script>
+</body>
+</html>
