@@ -11,55 +11,59 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            max-height: 100vh;
+            max-width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
         body {
             background: linear-gradient(135deg, #ffe6e6 0%, #ffb3c6 100%);
-            min-height: 100vh;
-            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
             text-align: center;
-            position: relative;
-            padding: 20px 0;
         }
         .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px 30px;
+            padding: 30px 25px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             backdrop-filter: blur(5px);
-            max-width: 450px;
-            width: 90%;
+            max-width: 420px;
+            width: 85%;
             z-index: 2;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden;
         }
         .gif {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             object-fit: contain;
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-shrink: 0;
         }
         h1 {
             color: #ff4d6d;
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 22px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .please-quote {
             color: #ff4d6d;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             font-style: italic;
             min-height: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: fadeIn 0.3s ease;
         }
         .btn-container {
@@ -67,8 +71,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            padding: 20px 0;
-            overflow: visible;
+            padding: 5px 0;
         }
         button {
             font-weight: bold;
@@ -76,16 +79,18 @@
             border-radius: 50px;
             cursor: pointer;
         }
-        #yesBtn {
+        #yesBtn, #confirmDateBtn {
             background-color: #ff4d6d;
             color: white;
-            padding: 14px 32px;
-            font-size: 18px;
+            padding: 12px 28px;
+            font-size: 17px;
             box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
-            transform-origin: center center;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 100%;
+            width: auto;
+            white-space: nowrap;
         }
-        #yesBtn:hover {
+        #yesBtn:hover, #confirmDateBtn:hover {
             background-color: #ff2a55;
         }
         #noBtn {
@@ -93,11 +98,10 @@
             color: white;
             padding: 12px 24px;
             font-size: 16px;
-            position: fixed;
+            position: absolute;
             z-index: 999;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: left 0.15s ease, top 0.15s ease;
-            /* Fixed dimensions so shape/size never alters */
             width: 80px;
             height: 45px;
             display: flex;
@@ -106,15 +110,37 @@
         }
         .success-message {
             display: none;
+            width: 100%;
         }
         .success-message h2 {
             color: #ff4d6d;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
         .success-message p {
             color: #444;
-            font-size: 18px;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+        .date-picker-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+        input[type="date"] {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #ff4d6d;
+            border-radius: 12px;
+            outline: none;
+            color: #333;
+            background-color: #fff;
+            width: 80%;
+            text-align: center;
+            font-weight: bold;
         }
 
         @keyframes fadeIn {
@@ -126,9 +152,9 @@
 <body>
 
     <div class="card" id="mainCard">
-        <img id="mainGif" class="gif" src="https://media.tenor.com/f11j0Rj5x80AAAAC/bubu-dudu-bubu.gif" alt="Bubu Dudu Cute Love">
+        <img id="mainGif" class="gif" src="https://raw.githubusercontent.com/DzarelDeveloper/Img/main/gaskun.gif" alt="Bubu Dudu Cute Love">
         
-        <div id="questionContent">
+        <div id="questionContent" style="width: 100%;">
             <h1>Would you go on a date with me? 🥺❤️</h1>
             <div id="quoteBox" class="please-quote"></div>
             <div class="btn-container">
@@ -138,26 +164,41 @@
 
         <div id="successContent" class="success-message">
             <h2>YAY! Best decision ever! 🐼🐻💋</h2>
-            <p>I can't wait! Let me know when you're free! 🥰</p>
+            <p>Pick a date on the calendar so I can reserve our special night! 😉✨</p>
+
+            <div class="date-picker-container">
+                <input type="date" id="datePicker" />
+                <button id="confirmDateBtn">Confirm Our Date! 💖</button>
+            </div>
         </div>
     </div>
 
     <button id="noBtn">No</button>
 
     <script>
+        // -------------------------------------------------------------------
+        // SET YOUR PHONE NUMBER HERE (Include Country Code, e.g., '919876543210')
+        // -------------------------------------------------------------------
+        const YOUR_PHONE_NUMBER = "YOUR_PHONE_NUMBER"; 
+
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
+        const confirmDateBtn = document.getElementById('confirmDateBtn');
+        const datePicker = document.getElementById('datePicker');
         const questionContent = document.getElementById('questionContent');
         const successContent = document.getElementById('successContent');
         const mainGif = document.getElementById('mainGif');
         const quoteBox = document.getElementById('quoteBox');
 
+        // Set minimum date selector to today
+        const today = new Date().toISOString().split('T')[0];
+        datePicker.setAttribute('min', today);
+
         const cuteBubuGifs = [
-            "https://media.tenor.com/gU86W-qiiSgAAAAC/bubu-dudu-sseeyall.gif",
-            "https://media.tenor.com/J7t6j5bYd1gAAAAC/bubu-dudu-kiss.gif",
-            "https://media.tenor.com/1-P2i6x2T6wAAAAC/bubu-dudu-cuddle.gif",
-            "https://media.tenor.com/00l4iZ5-s0MAAAAC/bubu-dudu-hearts.gif",
-            "https://media.tenor.com/vH5tP2v6Q1IAAAAC/bubu-dudu-hug.gif"
+            "https://raw.githubusercontent.com/DzarelDeveloper/Img/main/Ask-me.gif",
+            "https://raw.githubusercontent.com/DzarelDeveloper/Img/main/gaskun.gif",
+            "https://raw.githubusercontent.com/DzarelDeveloper/Img/main/hug.gif",
+            "https://raw.githubusercontent.com/DzarelDeveloper/Img/main/kiss.gif"
         ];
 
         const quotes = [
@@ -174,11 +215,13 @@
         ];
 
         let clickCount = 0;
-        let yesScale = 1;
+        let currentPaddingV = 12;
+        let currentPaddingH = 28;
+        let currentFontSize = 17;
 
         function setInitialNoPosition() {
             const yesRect = yesBtn.getBoundingClientRect();
-            noBtn.style.left = (yesRect.right + 25) + 'px';
+            noBtn.style.left = (yesRect.right + 20) + 'px';
             noBtn.style.top = yesRect.top + 'px';
         }
 
@@ -189,7 +232,7 @@
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
 
-            const padding = 20;
+            const padding = 15;
             const maxX = window.innerWidth - btnWidth - padding;
             const maxY = window.innerHeight - btnHeight - padding;
 
@@ -207,14 +250,18 @@
             mainGif.src = cuteBubuGifs[clickCount % cuteBubuGifs.length];
 
             clickCount++;
-            yesScale += 0.2;
 
-            // Grow Yes button size cleanly without altering No button
-            yesBtn.style.transform = `scale(${yesScale})`;
-            
-            // Add padding to container dynamically so large Yes button doesn't overlap text/GIF
-            const containerPadding = Math.max(20, 20 * yesScale);
-            document.querySelector('.btn-container').style.padding = `${containerPadding}px 0`;
+            const cardWidth = document.getElementById('mainCard').offsetWidth - 50;
+            if (yesBtn.offsetWidth < cardWidth) {
+                currentPaddingV += 2.5;
+                currentPaddingH += 6;
+                currentFontSize += 1.2;
+                
+                yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
+                yesBtn.style.fontSize = `${currentFontSize}px`;
+            } else {
+                yesBtn.style.width = '100%';
+            }
         }
 
         noBtn.addEventListener('mouseover', dodgeNo);
@@ -228,7 +275,25 @@
             questionContent.style.display = 'none';
             noBtn.style.display = 'none';
             successContent.style.display = 'block';
-            mainGif.src = 'https://media.tenor.com/gU86W-qiiSgAAAAC/bubu-dudu-sseeyall.gif'; 
+            mainGif.src = 'https://raw.githubusercontent.com/DzarelDeveloper/Img/main/kiss.gif'; 
+        });
+
+        // WhatsApp Redirect Handler
+        confirmDateBtn.addEventListener('click', () => {
+            const selectedDate = datePicker.value;
+
+            if (!selectedDate) {
+                alert("Please select a date on the calendar first! 📅❤️");
+                return;
+            }
+
+            // Flirty, romantic text payload
+            const romanticText = `Hey handsome! 😘 I finally said YES! 💖\n\nMark your calendar for ${selectedDate} because you're taking me out on our date. You better be ready to steal my heart (and maybe a few kisses 😉🔥)!\n\nCan't wait! 💋✨`;
+            
+            const encodedMessage = encodeURIComponent(romanticText);
+            const whatsappUrl = `https://wa.me/${YOUR_PHONE_NUMBER}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
         });
     </script>
 </body>
